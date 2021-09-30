@@ -60,8 +60,13 @@ agent any
           #export LIQUIBASE_ARGS="--defaultsFile=${ENVIRONMENT}/liquibase.properties --changelogFile=${CHANGLOGFILE} --classpath=${CLASSPATH}"
           export LIQUIBASE_ARGS=""
           #export "LIQUIBASE_ARGS="$LIQUIBASE_ARGS
+
+
           cd ${PROJECT}/${BASEDIR}
           ls -alh
+          echo "LIQUIBASE_COMMAND_CHANGELOG_FILE="${LIQUIBASE_COMMAND_CHANGELOG_FILE}
+          echo "LIQUIBASE_COMMAND_DEFAULTS_FILE="${LIQUIBASE_COMMAND_DEFAULTS_FILE}
+
           liquibase --version
           liquibase $LIQUIBASE_ARGS status --verbose
           liquibase $LIQUIBASE_ARGS updateSQL
