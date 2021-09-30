@@ -70,7 +70,7 @@ agent any
           liquibase --version
           liquibase $LIQUIBASE_ARGS status --verbose
           liquibase $LIQUIBASE_ARGS updateSQL
-          liquibase $LIQUIBASE_ARGS update
+          #liquibase $LIQUIBASE_ARGS update
           liquibase $LIQUIBASE_ARGS history
         '''
       } // steps
