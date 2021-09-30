@@ -43,9 +43,7 @@ agent any
             ])
         sh '''
           { set +x; } 2>/dev/null
-          ls -alh
           cd ${PROJECT}
-          ls -alh
           git status
           '''
       } // steps for checkout stages
@@ -55,8 +53,11 @@ agent any
       steps {
         sh '''
           { set +x; } 2>/dev/null
+          echo "PATH="$PATH
           export LIQUIBASE_ARGS="--defaultsFile={ENVIRONMENT}/liquibase.properties --changelogFile=${CHANGLOGFILE} --classpath=${CLASSPATH}"
+          export "LIQUIBASE_ARGS="$LIQUIBASE_ARGS
           cd ${PROJECT}/${BASEDIR}
+          ls -alh
           liquibase --version
           liquibase $LIQUIBASE_ARGS status --verbose
           liquibase --url=${URL} --password=${PASSWORD} --contexts=$ENVIRONMENT_STEP rollbackCount 2
