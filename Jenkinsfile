@@ -12,7 +12,7 @@ agent any
     CHANGELOGFILE="${params.CHANGELOGFILE}"
     CLASSPATH="${params.CLASSPATH}"
     BASEDIR="${params.BASEDIR}"
-    PATH="/root/liquibase:$PATH"
+    PATH="/opt/liquibase-4.5.0:$PATH"
   }
   stages {
 
