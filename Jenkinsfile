@@ -37,9 +37,9 @@ agent any
         // checkout Liquibase project from repo
         checkout([
             $class: 'GitSCM', 
-            branches: [[name: '*/${BRANCH}']], 
-            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '${PROJECT}']],
-            userRemoteConfigs: [[credentialsId: '16dc7cf1-1e5d-494b-89a0-141830d1ee70', url: '${GITURL}/${PROJECT}.git']]
+            branches: [[name: "*/${BRANCH}"]], 
+            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${PROJECT}"]],
+            userRemoteConfigs: [[credentialsId: '16dc7cf1-1e5d-494b-89a0-141830d1ee70', url: "${GITURL}/${PROJECT}.git"]]
             ])
         sh '''
           { set +x; } 2>/dev/null
