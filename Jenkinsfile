@@ -57,33 +57,26 @@ agent any
           export LIQUIBASE_DEFAULTS_FILE=${ENVIRONMENT}/liquibase.properties
           export LIQUIBASE_COMMAND_CHANGELOG_FILE=${CHANGELOGFILE}
           export LIQUIBASE_CLASSPATH=${CLASSPATH}
-          #export LIQUIBASE_ARGS="--defaultsFile=${ENVIRONMENT}/liquibase.properties --changelogFile=${CHANGLOGFILE} --classpath=${CLASSPATH}"
-          export LIQUIBASE_ARGS=""
-          #export "LIQUIBASE_ARGS="$LIQUIBASE_ARGS
-
-
+ 
           cd ${PROJECT}/${BASEDIR}
           ls -alh
-          echo "LIQUIBASE_COMMAND_CHANGELOG_FILE="${LIQUIBASE_COMMAND_CHANGELOG_FILE}
-          echo "LIQUIBASE_COMMAND_DEFAULTS_FILE="${LIQUIBASE_COMMAND_DEFAULTS_FILE}
-
           liquibase --version
-          liquibase $LIQUIBASE_ARGS status --verbose
-          liquibase $LIQUIBASE_ARGS updateSQL
-          #liquibase $LIQUIBASE_ARGS update
-          liquibase $LIQUIBASE_ARGS history
+          liquibase status --verbose
+          liquibase updateSQL
+          #liquibase update
+          liquibase history
         '''
       } // steps
     }   // Environment stage
 
-        stage ('Deleting project workspace'){
-           steps {
-             sh '''
-               { set +x; } 2>/dev/null
-               echo "Deleting project workspace..."
-               cd /localPath/to/workspaceFolder && rm -r ${PROJ}
-             '''
-           } // steps
-         }   // Deleting project workspace
+        // stage ('Deleting project workspace'){
+        //    steps {
+        //      sh '''
+        //        { set +x; } 2>/dev/null
+        //        echo "Deleting project workspace..."
+        //        cd /localPath/to/workspaceFolder && rm -r ${PROJ}
+        //      '''
+        //    } // steps
+        //  }   // Deleting project workspace
   } // stages
 }  // pipeline
