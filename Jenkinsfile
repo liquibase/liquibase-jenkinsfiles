@@ -37,6 +37,7 @@ agent any
         // checkout Liquibase project from repo
         sh '''
           { set +x; } 2>/dev/null
+          echo "git clone ${GITURL}/${PROJECT}.git"
           git clone ${GITURL}/${PROJECT}.git
           cd ${PROJECT}
           git checkout $BRANCH
