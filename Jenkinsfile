@@ -54,13 +54,16 @@ agent any
         sh '''
           { set +x; } 2>/dev/null
           echo "PATH="$PATH
-          export LIQUIBASE_ARGS="--defaultsFile={ENVIRONMENT}/liquibase.properties --changelogFile=${CHANGLOGFILE} --classpath=${CLASSPATH}"
-          export "LIQUIBASE_ARGS="$LIQUIBASE_ARGS
+          export LIQUIBASE_DEFAULTS_FILE="${ENVIRONMENT}/liquibase.properties"
+          export LIQUIBASE_CHANGELOG_FILE="${CHANGLOGFILE}"
+          export LIQUIBASE_CLASSPATH="${CLASSPATH}"
+          #export LIQUIBASE_ARGS="--defaultsFile=${ENVIRONMENT}/liquibase.properties --changelogFile=${CHANGLOGFILE} --classpath=${CLASSPATH}"
+          export LIQUIBASE_ARGS=""
+          #export "LIQUIBASE_ARGS="$LIQUIBASE_ARGS
           cd ${PROJECT}/${BASEDIR}
           ls -alh
           liquibase --version
           liquibase $LIQUIBASE_ARGS status --verbose
-          liquibase --url=${URL} --password=${PASSWORD} --contexts=$ENVIRONMENT_STEP rollbackCount 2
           liquibase $LIQUIBASE_ARGS updateSQL
           liquibase $LIQUIBASE_ARGS update
           liquibase $LIQUIBASE_ARGS history
