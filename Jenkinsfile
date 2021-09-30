@@ -43,10 +43,9 @@ agent any
             ])
         sh '''
           { set +x; } 2>/dev/null
-          echo "git clone ${GITURL}/${PROJECT}.git"
-          #git clone ${GITURL}/${PROJECT}.git
+          ls -alh
           cd ${PROJECT}
-          #git checkout $BRANCH
+          ls -alh
           git status
           '''
       } // steps for checkout stages
