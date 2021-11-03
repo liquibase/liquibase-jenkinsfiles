@@ -69,6 +69,21 @@ agent any
       } // steps
     }   // Environment stage
 
+   stage ('Package'){
+      steps {
+        sh '''	  
+	  echo
+          echo "==== Creating artifact ${BUILD_NUMBER}.zip ===="
+          zip -q -r ${BUILD_NUMBER}.zip *
+          mv *.zip ..
+	  ls ../*.zip
+ 
+          echo
+          echo "=====FINISHED===="
+        '''
+      } // steps
+    }   // Package stage
+	  
         // stage ('Deleting project workspace'){
         //    steps {
         //      sh '''
