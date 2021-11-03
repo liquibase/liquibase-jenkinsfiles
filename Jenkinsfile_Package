@@ -1,0 +1,69 @@
+#!/usr/bin/env groovy
+// Liquibase declarative pipeline
+//
+//
+pipeline {
+agent any
+  environment {
+    GITURL="${params.REPO_URL}"
+    PROJECT="${params.PROJECT}"
+    BRANCH="${params.BRANCH}"
+  }
+  stages {
+
+    stage ('Precheck') {
+		steps {
+			sh '''
+        { set +x; } 2>/dev/null
+        echo "Git repository: "${GITURL}
+        echo "Current project: "${PROJECT}
+        echo "Current branch: "${BRANCH}
+        echo "Current path: "${PATH}
+			'''
+		} // steps
+	} // stage 'precheck'
+
+    stage ('Checkout') {
+      steps {
+        // checkout Liquibase project from repo
+        checkout([
+            $class: 'GitSCM', 
+            branches: [[name: "*/${BRANCH}"]], 
+            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${PROJECT}"]],
+            userRemoteConfigs: [[credentialsId: '16dc7cf1-1e5d-494b-89a0-141830d1ee70', url: "${GITURL}"]]
+            ])
+        sh '''
+          { set +x; } 2>/dev/null
+          cd ${PROJECT}
+          git status
+          '''
+      } // steps for checkout stages
+    } // stage 'checkout'
+
+
+   stage ('Package'){
+      steps {
+        sh '''	  
+	  echo
+          echo "==== Creating artifact ${BUILD_NUMBER}.zip ===="
+          zip -q -r ${BUILD_NUMBER}.zip *
+          mv *.zip ..
+	  ls ../*.zip
+ 
+          echo
+          echo "=====FINISHED===="
+        '''
+      } // steps
+    }   // Package stage
+	  
+        // stage ('Deleting project workspace'){
+        //    steps {
+        //      sh '''
+        //        { set +x; } 2>/dev/null
+        //        echo "Deleting project workspace..."
+        //        cd /localPath/to/workspaceFolder && rm -r ${PROJ}
+        //      '''
+        //    } // steps
+        //  }   // Deleting project workspace
+  } // stages
+}  // pipeline
