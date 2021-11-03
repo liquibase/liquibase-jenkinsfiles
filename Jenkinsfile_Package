@@ -6,7 +6,7 @@ pipeline {
   agent {
     node {
 	label 'liquibase'
-    	customWorkspace "${WORKSPACE}/${BUILD_NUMBER}/"
+	    customWorkspace "/var/lib/jenkins/workspace/${params.PROJECT}/${BUILD_NUMBER}/"
     }
   }
 	
