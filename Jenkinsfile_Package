@@ -5,9 +5,11 @@
 pipeline {
   agent {
     node {
+	label 'liquibase'
     	customWorkspace "${WORKSPACE}/${BUILD_NUMBER}/"
     }
   }
+	
   environment {
     GITURL="${params.REPO_URL}"
     PROJECT="${params.PROJECT}"
