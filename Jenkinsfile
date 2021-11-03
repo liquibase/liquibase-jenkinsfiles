@@ -67,6 +67,7 @@ agent any
 		  liquibase updateSQL
 		  #liquibase update
 		  liquibase history
+		fi
 	'''
 
 		      
