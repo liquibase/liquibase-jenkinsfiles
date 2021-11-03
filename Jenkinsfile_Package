@@ -22,6 +22,7 @@ agent any
         echo "Current project: "${PROJECT}
         echo "Current branch: "${BRANCH}
         echo "Current path: "${PATH}
+	echo "Current working directory: "`pwd`
 			'''
 		} // steps
 	} // stage 'precheck'
