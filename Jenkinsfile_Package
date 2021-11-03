@@ -4,6 +4,9 @@
 //
 pipeline {
 agent any
+    node {
+	    customWorkspace "${WORKSPACE}/${BUILD_NUMBER}/"
+    }
   environment {
     GITURL="${params.REPO_URL}"
     PROJECT="${params.PROJECT}"
@@ -48,7 +51,7 @@ agent any
           echo "==== Creating artifact ${BUILD_NUMBER}.zip ===="
           zip -q -r ${BUILD_NUMBER}.zip *
           mv *.zip ..
-	  ls ../*.zip
+	  ls -alrt ../*.zip
  
           echo
           echo "=====FINISHED===="
