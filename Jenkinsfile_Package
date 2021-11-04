@@ -53,7 +53,8 @@ pipeline {
         sh '''	  
 	  echo
           echo "==== Creating artifact ${BUILD_NUMBER}.zip ===="
-          zip -q -r ${BUILD_NUMBER}.zip *
+	  cd ${PROJECT}
+          zip -q -r ${PROJECT}.1.0.${BUILD_NUMBER}.zip *
           mv *.zip ..
 	  ls -alrt ../*.zip
  
