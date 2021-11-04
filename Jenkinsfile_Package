@@ -53,8 +53,8 @@ pipeline {
         sh '''	  
 	  echo
           echo "==== Creating artifact ${BUILD_NUMBER}.zip ===="
-	  cd ${PROJECT}
-          zip -q -r ${PROJECT}.1.0.${BUILD_NUMBER}.zip *
+	  /usr/bin/octo pack ./${PROJECT} --id="${PROJECT}" --version="1.0.${BUILD_NUMBER}" --format=zip
+          # zip -q -r ${PROJECT}.1.0.${BUILD_NUMBER}.zip *
           mv *.zip ..
 	  ls -alrt ../*.zip
  
