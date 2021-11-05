@@ -53,7 +53,7 @@ pipeline {
 	      
           echo '==== octopusPack ===='
           
-          dir('${PROJECT}') {
+          dir("${PROJECT}") {
 		octopusPack additionalArgs: '', packageFormat: 'zip', packageId: 'CVS', packageVersion: '1.0.${BUILD_NUMBER}', sourcePath: '.', toolId: 'Default'
           }
  
@@ -68,7 +68,7 @@ pipeline {
 
           echo '==== octopusPushBuildInformation ===='
                     
-          dir('${PROJECT}') {
+          dir("${PROJECT}") {
 		octopusPushBuildInformation additionalArgs: '', commentParser: 'GitHub', overwriteMode: 'FailIfExists', packageId: 'CVS', packageVersion: '1.0.${BUILD_NUMBER}', serverId: 'https://liquibase-cs.octopus.app/', spaceId: 'Spaces-1', toolId: 'Default'
           }
 
@@ -85,7 +85,7 @@ pipeline {
           echo '==== octopusPushPackage - 1.0.${BUILD_NUMBER}.zip ===='
           
                               
-          dir('${PROJECT}') {
+          dir("${PROJECT}") {
 		octopusPushPackage additionalArgs: '', overwriteMode: 'FailIfExists', packagePaths: '**/*.zip', serverId: 'https://liquibase-cs.octopus.app/', spaceId: 'Spaces-1', toolId: 'Default'
           }
  
