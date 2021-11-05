@@ -50,7 +50,7 @@ pipeline {
 
    stage ('Package Application'){
       steps {
-	        echo ''
+	      
           echo '==== octopusPack ===='
           
           dir('${PROJECT}') {
@@ -65,8 +65,7 @@ pipeline {
               toolId: 'Default' 
           }
  
-          echo
-          echo "===== FINISHED ===="
+          echo '===== FINISHED ===='
 
       } // steps
     }   // Package Application stage
@@ -74,7 +73,7 @@ pipeline {
 
    stage ('Push Build Information'){
       steps {
-	        echo ''
+
           echo '==== octopusPushBuildInformation ===='
                     
           dir('${PROJECT}') {
@@ -89,8 +88,7 @@ pipeline {
               toolId: 'Default'
           }
 
-          echo
-          echo "===== FINISHED ===="
+          echo '===== FINISHED ===='
 
       } // steps
     }   // Push Build Information stage
@@ -99,7 +97,7 @@ pipeline {
 
    stage ('Push Package'){
       steps {
-	        echo ''
+
           echo '==== octopusPushPackage - 1.0.${BUILD_NUMBER}.zip ===='
           
                               
@@ -112,8 +110,8 @@ pipeline {
               toolId: 'Default'
           }
  
-          echo
-          echo "===== FINISHED ===="
+
+          echo '===== FINISHED ===='
           
       } // steps
     }   // Push Build Information stage
