@@ -20,12 +20,12 @@ pipeline {
     stage ('Precheck') {
 		steps {
 			sh '''
-        { set +x; } 2>/dev/null
-        echo "Git repository: "${GITURL}
-        echo "Current project: "${PROJECT}
-        echo "Current branch: "${BRANCH}
-        echo "Current path: "${PATH}
-	echo "Current working directory: "`pwd`
+				{ set +x; } 2>/dev/null
+				echo "Git repository: "${GITURL}
+				echo "Current project: "${PROJECT}
+				echo "Current branch: "${BRANCH}
+				echo "Current path: "${PATH}
+				echo "Current working directory: "`pwd`
 			'''
 		} // steps
 	} // stage 'precheck'
@@ -54,15 +54,7 @@ pipeline {
           echo '==== octopusPack ===='
           
           dir('${PROJECT}') {
-            octopusPack 
-              additionalArgs: '', 
-              includePaths: '', 
-              outputPath: '', 
-              packageFormat: 'zip', 
-              packageId: 'CVS', 
-              packageVersion: '1.0.${BUILD_NUMBER}', 
-              sourcePath: '', 
-              toolId: 'Default' 
+		octopusPack additionalArgs: '', packageFormat: 'zip', packageId: 'CVS', packageVersion: '1.0.${BUILD_NUMBER}', sourcePath: '.', toolId: 'Default'
           }
  
           echo '===== FINISHED ===='
@@ -77,15 +69,15 @@ pipeline {
           echo '==== octopusPushBuildInformation ===='
                     
           dir('${PROJECT}') {
-            octopusPushBuildInformation 
-              additionalArgs: '', 
-              commentParser: 'GitHub', 
-              overwriteMode: 'FailIfExists', 
-              packageId: 'CVS', 
-              packageVersion: '1.0.${BUILD_NUMBER}', 
-              serverId: 'https://liquibase-cs.octopus.app/', 
-              spaceId: 'Spaces-1', 
-              toolId: 'Default'
+		octopusPushBuildInformation 
+			additionalArgs: '', 
+			commentParser: 'GitHub', 
+			overwriteMode: 'FailIfExists', 
+			packageId: 'CVS', 
+			packageVersion: '1.0.${BUILD_NUMBER}', 
+			serverId: 'https://liquibase-cs.octopus.app/', 
+			spaceId: 'Spaces-1', 
+			toolId: 'Default'
           }
 
           echo '===== FINISHED ===='
