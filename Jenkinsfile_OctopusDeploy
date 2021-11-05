@@ -1,0 +1,122 @@
+#!/usr/bin/env groovy
+// Liquibase declarative pipeline
+//
+//
+pipeline {
+  agent {
+    node {
+	label 'liquibase'
+	    customWorkspace "/var/lib/jenkins/workspace/${params.PROJECT}/${BUILD_NUMBER}/"
+    }
+  }
+	
+  environment {
+    GITURL="${params.REPO_URL}"
+    PROJECT="${params.PROJECT}"
+    BRANCH="${params.BRANCH}"
+  }
+  stages {
+
+    stage ('Precheck') {
+		steps {
+			sh '''
+        { set +x; } 2>/dev/null
+        echo "Git repository: "${GITURL}
+        echo "Current project: "${PROJECT}
+        echo "Current branch: "${BRANCH}
+        echo "Current path: "${PATH}
+	echo "Current working directory: "`pwd`
+			'''
+		} // steps
+	} // stage 'precheck'
+
+    stage ('Checkout') {
+      steps {
+        // checkout Liquibase project from repo
+        checkout([
+            $class: 'GitSCM', 
+            branches: [[name: "*/${BRANCH}"]], 
+            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${PROJECT}"]],
+            userRemoteConfigs: [[credentialsId: '16dc7cf1-1e5d-494b-89a0-141830d1ee70', url: "${GITURL}"]]
+            ])
+        sh '''
+          { set +x; } 2>/dev/null
+          cd ${PROJECT}
+          git status
+          '''
+      } // steps for checkout stages
+    } // stage 'checkout'
+
+
+   stage ('Package Application'){
+      steps {
+	        echo ''
+          echo '==== octopusPack ===='
+          
+          dir('${PROJECT}') {
+            octopusPack 
+              additionalArgs: '', 
+              includePaths: '', 
+              outputPath: '', 
+              packageFormat: 'zip', 
+              packageId: 'CVS', 
+              packageVersion: '1.0.${BUILD_NUMBER}', 
+              sourcePath: '', 
+              toolId: 'Default' 
+          }
+ 
+          echo
+          echo "===== FINISHED ===="
+
+      } // steps
+    }   // Package Application stage
+	  
+
+   stage ('Push Build Information'){
+      steps {
+	        echo ''
+          echo '==== octopusPushBuildInformation ===='
+                    
+          dir('${PROJECT}') {
+            octopusPushBuildInformation 
+              additionalArgs: '', 
+              commentParser: 'GitHub', 
+              overwriteMode: 'FailIfExists', 
+              packageId: 'CVS', 
+              packageVersion: '1.0.${BUILD_NUMBER}', 
+              serverId: 'https://liquibase-cs.octopus.app/', 
+              spaceId: 'Spaces-1', 
+              toolId: 'Default'
+          }
+
+          echo
+          echo "===== FINISHED ===="
+
+      } // steps
+    }   // Push Build Information stage
+
+
+
+   stage ('Push Package'){
+      steps {
+	        echo ''
+          echo '==== octopusPushPackage - 1.0.${BUILD_NUMBER}.zip ===='
+          
+                              
+          dir('${PROJECT}') {
+            octopusPushPackage additionalArgs: '', 
+              overwriteMode: 'FailIfExists', 
+              packagePaths: '**/*.zip', 
+              serverId: 'https://liquibase-cs.octopus.app/', 
+              spaceId: 'Spaces-1', 
+              toolId: 'Default'
+          }
+ 
+          echo
+          echo "===== FINISHED ===="
+          
+      } // steps
+    }   // Push Build Information stage
+
+  } // stages
+}  // pipeline
